@@ -1195,7 +1195,7 @@ abstract class JDatabase implements JDatabaseInterface
 	public function quote($text, $escape = true)
 	{
 		// database independent quoting
-		//$q = $this->nameQuote;		
+		//$q = $this->nameQuote;
 		//return $q.($escape ? $this->escape($text) : $text).$q;
 
 		return '\'' . ($escape ? $this->escape($text) : $text) . '\'';
@@ -1385,52 +1385,6 @@ abstract class JDatabase implements JDatabaseInterface
 	 * @since   11.1
 	 */
 	abstract public function setUTF();
-
-	/**
-	 * Method to commit a transaction.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 * @throws  JDatabaseException
-	 */
-	abstract public function transactionCommit();
-
-	/**
-	 * Method to roll back a transaction.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 * @throws  JDatabaseException
-	 */
-	abstract public function transactionRollback();
-
-	/**
-	 * Method to initialize a transaction.
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 * @throws  JDatabaseException
-	 */
-	abstract public function transactionStart();
-
-	/**
-	 * Method to truncate a table.
-	 *
-	 * @param   string  $table  The table to truncate
-	 *
-	 * @return  void
-	 *
-	 * @since   11.3
-	 * @throws  JDatabaseException
-	 */
-	public function truncateTable($table)
-	{
-		$this->setQuery('TRUNCATE TABLE ' . $this->quoteName($table));
-		$this->query();
-	}
 
 	/**
 	 * Updates a row in a table based on an object's properties.
@@ -1744,7 +1698,7 @@ abstract class JDatabase implements JDatabaseInterface
 			return JText::_('JLIB_DATABASE_FUNCTION_NOERROR');
 		}
 	}
-	
+
 	/**
 	 * Method to create a new database.
 	 *
@@ -1753,10 +1707,10 @@ abstract class JDatabase implements JDatabaseInterface
 	 * @return	boolean	True on success.
 	 * @since	11.1
 	 * @todo 	Implement it in all subclasses, called during installation
-	 */	
+	 */
 //	abstract public function createDatabase( $options );
-	
-	
+
+
 	/**
 	 * Method to delete all tables in a database with a given prefix.
 	 *
@@ -1769,7 +1723,7 @@ abstract class JDatabase implements JDatabaseInterface
 	 * @todo 	Implement it in all subclasses, called during installation
 	 */
 //	abstract public function deleteDatabase(& $db, $name, $prefix);
-	
+
 	/**
 	 * Method to backup all tables in a database with a given prefix.
 	 *
@@ -1781,5 +1735,5 @@ abstract class JDatabase implements JDatabaseInterface
 	 * @since	11.1
 	 * @todo 	Implement it in all subclasses, called during installation
 	 */
-//	abstract public function backupDatabase( $name, $prefix );	
+//	abstract public function backupDatabase( $name, $prefix );
 }

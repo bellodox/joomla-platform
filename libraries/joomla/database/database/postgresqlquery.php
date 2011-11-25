@@ -2,7 +2,7 @@
 /**
  * @package		Joomla.Platform
  * @subpackage	Database
- * 
+ *
  * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -12,9 +12,9 @@ defined('JPATH_PLATFORM') or die;
 /**
  * Query Building Class.
  *
- * @package		Joomla.Framework
- * @subpackage	Database
- * @since		11.3
+ * @package     Joomla.Platform
+ * @subpackage  Database
+ * @since       11.3
  */
 class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 {
@@ -23,25 +23,25 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 	 * @since  11.3
 	 */
 	protected $forUpdate = null;
-	
+
 	/**
 	 * @var    object  The FOR SHARE element used in "FOR SHARE"  lock
 	 * @since  11.3
 	 */
 	protected $forShare = null;
-	
+
 	/**
 	 * @var    object  The NOWAIT element used in "FOR SHARE" and "FOR UPDATE" lock
 	 * @since  11.3
 	 */
 	protected $noWait = null;
-	
+
 	/**
 	 * @var    object  The LIMIT element
 	 * @since  11.3
 	 */
 	protected $limit = null;
-	
+
 	/**
 	 * @var    object  The OFFSET element
 	 * @since  11.3
@@ -51,10 +51,10 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 	/**
 	 * @var    object  The RETURNING element of INSERT INTO
 	 * @since  11.3
-	 */	
+	 */
 	protected $returning = null;
-	
-	
+
+
 	/**
 	 * Magic function to convert the query to a string, only for postgresql specific query
 	 *
@@ -99,17 +99,17 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 				{
 					$query .= (string) $this->order;
 				}
-				
+
 				if ($this->limit)
 				{
 					$query .= (string) $this->limit;
 				}
-				
+
 				if ($this->offset)
 				{
 					$query .= (string) $this->offset;
 				}
-				
+
 				if ($this->forUpdate)
 				{
 					$query .= (string) $this->forUpdate;
@@ -118,7 +118,7 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 				{
 					$query .= (string) $this->forShare;
 				}
-				
+
 				if ($this->noWait)
 				{
 					$query .= (string) $this->noWait;
@@ -138,19 +138,19 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 
 					$query .= ' VALUES ';
 					$query .= (string) $this->values;
-					
+
 					if ($this->returning)
 					{
 						$query .= (string) $this->returning;
 					}
 				}
-				
+
 				break;
-				
+
 			case 'lock':
 				$query .= (string) $this->lock;
 				break;
-				
+
 			default:
 				$query = parent::__toString();
 				break;
@@ -159,8 +159,8 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 
 		return $query;
 	}
-	
-	
+
+
 	/**
 	 * Clear data from the query or a specific clause of the query.
 	 *
@@ -181,11 +181,11 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 			case 'offset':
 				$this->offset = null;
 				break;
-				
+
 			case 'forUpdate':
 				$this->forUpdate = null;
 				break;
-				
+
 			case 'forShare':
 				$this->forShare = null;
 				break;
@@ -193,11 +193,11 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 			case 'noWait':
 				$this->noWait = null;
 				break;
-			
+
 			case 'returning':
 				$this->returning = null;
 				break;
-				
+
 			default:
 				$this->type = null;
 				$this->limit = null;
@@ -206,13 +206,13 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 				$this->forShare = null;
 				$this->noWait = null;
 				$this->returning = null;
-				parent::clear($clause);		
+				parent::clear($clause);
 				break;
 		}
 
 		return $this;
 	}
-	
+
 	/**
 	 * Concatenates an array of column names or values.
 	 *
@@ -237,7 +237,7 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 			return implode(' || ', $values);
 		}
 	}
-	
+
 	/**
 	 * Gets the current date and time.
 	 *
@@ -249,79 +249,79 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 	{
 		return 'NOW()';
 	}
-   
+
 	/**
 	 * Sets the FOR UPDATE lock on select's output row
-	 * 
+	 *
 	 * @param	string	$table_name		The table to lock
 	 * @param	boolean	$noWait			Choose if use the NOWAIT option
-	 * 
+	 *
 	 * @return	JDatabaseQuery	FOR UPDATE query element
-	 * 
+	 *
 	 * @since	11.3
 	 */
 	public function forUpdate ($table_name, $glue = ',')
 	{
 		$this->type = 'forUpdate';
-		
+
 		if ( is_null($this->forUpdate) ) {
 			$glue = strtoupper($glue);
 			$this->forUpdate = new JDatabaseQueryElement('FOR UPDATE', ' OF ' . $table_name, " $glue ");
 		}
 		else {
 			$this->forUpdate->append( ' OF ' . $table_name );
-		}	
+		}
 	}
-	
+
 	/**
 	 * Sets the FOR SHARE lock on select's output row
-	 * 
+	 *
 	 * @param	string	$table_name		The table to lock
-	 * 
+	 *
 	 * @return	JDatabaseQuery FOR SHARE query element
-	 * 
+	 *
 	 * @since	11.3
 	 */
 	public function forShare ($table_name, $glue = ',')
 	{
 		$this->type = 'forShare';
-		
+
 		if ( is_null($this->forShare) ) {
 			$glue = strtoupper($glue);
 			$this->forShare = new JDatabaseQueryElement('FOR SHARE', ' OF ' . $table_name, " $glue " );
 		}
 		else {
 			$this->forShare->append( ' OF ' . $table_name );
-		}	
+		}
 	}
-	
+
 	/**
 	 * Sets the NOWAIT lock on select's output row
-	 * 
+	 *
 	 * @return	JDatabaseQuery	NO WAIT query element
-	 * 
+	 *
 	 * @since	11.3
 	 */
 	public function noWait ()
 	{
 		$this->type = 'noWait';
-		
+
 		if ( is_null($this->noWait) ) {
 			$this->noWait = new JDatabaseQueryElement('NOWAIT', null);
 		}
 	}
-	
+
    	/**
    	 * Method to lock the database table for writing.
      *
 	 * @return	JDatabaseQuery	Lock query syntax
-	 * 
+	 *
 	 * @since	11.3
 	 */
 	public function lock($table_name, $lock_type='ACCESS EXCLUSIVE')
 	{
 		$this->type = 'lock';
-		      	
+
 		if (is_null($this->lock)) {
         	$this->lock = new JDatabaseQueryElement('LOCK TABLE', " $table_name IN $lock_type MODE");
       	}
@@ -336,17 +336,17 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 	 * Unlock does not exist in PostgreSQL, it is automatically done on commit or rollback
 	 *
 	 * @return	boolean	True .
-	 * 
+	 *
 	 * @since	11.3
 	 */
-	public function unlock()  
+	public function unlock()
 	{
 		return true;
 	}
-	
+
 	/**
 	 * Set the LIMIT clause to the query
-	 * 
+	 *
 	 * @param   int  $limit		An int of how many row will be returned
 	 *
 	 * @return  JDatabaseQuery  Returns this object to allow chaining.
@@ -361,10 +361,10 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 
       	return $this;
 	}
-	
+
 	/**
 	 * Set the OFFSET clause to the query
-	 * 
+	 *
 	 * @param   int  $offset	An int for skipping row
 	 *
 	 * @return  JDatabaseQuery  Returns this object to allow chaining.
@@ -379,7 +379,7 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 
       	return $this;
 	}
-	
+
 	/**
 	 * Add the RETURNING element to INSERT INTO statement.
 	 *
@@ -391,16 +391,16 @@ class JDatabaseQueryPostgreSQL extends JDatabaseQuery
 	 */
 	public function returning( $pkCol )
 	{
-		if (is_null($this->returning)) 
+		if (is_null($this->returning))
 		{
 			$this->returning = new JDatabaseQueryElement('RETURNING', $pkCol);
 		}
 
 		return $this;
 	}
-	
+
 	/**
-	 * Return the table used in INSERT INTO, used in insertid() to get the 
+	 * Return the table used in INSERT INTO, used in insertid() to get the
 	 * 	auto-incremented value.
 	 *
 	 * @return  JDatabaseQuery  Returns this object to allow chaining.

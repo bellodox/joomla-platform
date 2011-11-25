@@ -14,9 +14,9 @@ JLoader::register('JDatabaseQueryPostgreSQL', dirname(__FILE__).'/postgresqlquer
 /**
  * PostgreSQL database driver
  *
- * @package		Joomla.Framework
- * @subpackage	Database
- * @since		11.3
+ * @package     Joomla.Platform
+ * @subpackage  Database
+ * @since       11.3
  */
 class JDatabasePostgreSQL extends JDatabase
 {

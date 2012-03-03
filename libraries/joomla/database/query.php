@@ -1432,7 +1432,7 @@ abstract class JDatabaseQuery
 	 *
 	 * @since   11.1
 	 */
-	public function where($conditions, $glue = 'AND')
+	public function where($conditions, $glue = '')
 	{
 		if (is_null($this->where))
 		{
@@ -1441,7 +1441,16 @@ abstract class JDatabaseQuery
 		}
 		else
 		{
-			$this->where->append($conditions);
+			if (is_array($conditions))
+			{
+				$im = strtoupper($glue) . ' ';
+				$im .= implode(' ' . strtoupper($glue) . ' ', $conditions);
+			}
+			else
+			{
+				$im = strtoupper($glue) . ' ' . $conditions;
+			}
+			$this->where->append($im);
 		}
 
 		return $this;

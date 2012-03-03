@@ -144,7 +144,7 @@ class JDatabaseQueryPostgresql extends JDatabaseQuery implements JDatabaseQueryL
 						$joinArray = explode($onWord, $joinElem[0]);
 
 						$this->from($joinArray[0]);
-						$this->where($joinArray[1]);
+						$this->where($joinArray[1], 'AND');
 					}
 
 					$query .= (string) $this->from;

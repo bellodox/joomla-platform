@@ -178,7 +178,7 @@ class JDatabasePostgresqlQueryTest extends JoomlaTestCase
 				"\nUPDATE #__foo AS a" .
 				"\nSET a.id = 2" .
 				"\nFROM b" .
-				"\nWHERE b.id = 1 AND b.id = a.id"
+				"\nWHERE b.id = 1  AND b.id = a.id"
 			),
 			'Tests for correct rendering.'
 		);
@@ -1023,12 +1023,12 @@ class JDatabasePostgresqlQueryTest extends JoomlaTestCase
 			array(
 				'bar = 2',
 				'goo = 3',
-			)
+			), 'AND'
 		);
 
 		$this->assertThat(
 			trim($q->where),
-			$this->equalTo('WHERE foo = 1 AND bar = 2 AND goo = 3'),
+			$this->equalTo('WHERE foo = 1  AND bar = 2 AND goo = 3'),
 			'Tests rendered value after second use and array input.'
 		);
 
@@ -1240,6 +1240,25 @@ class JDatabasePostgresqlQueryTest extends JoomlaTestCase
 		$this->assertThat(
 			trim($q->returning),
 			$this->equalTo('RETURNING id'),
+			'Tests rendered value.'
+		);
+	}
+
+	/**
+	 * Test for WHERE clause using different glues. 
+	 *
+	 * @return  void
+	 *
+	 * @since   12.1
+	 */
+	public function testWhereDiffGlues()
+	{
+		$q = new JDatabasePostgresqlQueryInspector($this->dbo);
+		$q->where("a = 1", '')->where("b = 1", 'OR')->where("c = 1", 'AND');
+
+		$this->assertThat(
+			trim($q->where),
+			$this->equalTo('WHERE a = 1  OR b = 1  AND c = 1'),
 			'Tests rendered value.'
 		);
 	}

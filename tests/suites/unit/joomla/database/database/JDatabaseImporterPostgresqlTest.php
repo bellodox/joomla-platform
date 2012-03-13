@@ -145,7 +145,7 @@ class JDatabaseImporterPostgresqlTest extends PHPUnit_Framework_TestCase
 		->method('getVersion')
 		->will(
 			$this->returnValue(
-				'7.1.2'
+				'9.1.2'
 			)
 		);
 

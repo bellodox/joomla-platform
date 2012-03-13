@@ -35,7 +35,7 @@ class JDatabaseExporterPostgresqlTest extends PHPUnit_Framework_TestCase
 	 * @var    bool  Boolean value to know if current database version is newer than 9.1.0
 	 * @since  12.1
 	 */
-	private $_ver9dot1 = true;
+	protected $ver9dot1 = true;
 
 	/**
 	 * Sets up the testing conditions
